@@ -3,7 +3,7 @@ Componenti:
 - Simone Rinaldi - M63/1654
 - Lorenza Pezzullo - M63/1671
 - Giuseppe Imparato - M63/
-- Giada Ottaiano - M63/
+- Giada Ottaiano - M63/1640
   
 # Guida all'installazione
 
