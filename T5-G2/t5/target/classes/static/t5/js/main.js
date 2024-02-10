@@ -33,6 +33,20 @@ document.addEventListener("DOMContentLoaded", (e) => {
   document.getElementById("usernameField").innerText = parseJwt(getCookie("jwt")).sub;
 });
 
+function selectGameMode(mode) {
+  console.log("Modalità selezionata:", mode);
+  localStorage.setItem("modalita", mode);
+
+  // Verifica la modalità selezionata
+  if (mode === "Sfida un Robot") {
+    // Redirect alla pagina per giocare con il robot
+    window.location.href = "/gamemode";
+  } else if (mode === "Multiplayer" || mode === "Allenamento") {
+    // Avvisa l'utente che questa modalità non è ancora disponibile
+    alert("La modalità " + mode + " non è ancora disponibile. Arriverà presto!");
+  }
+}
+
 function Handlebuttonclass(id, button) {
   $(document).ready(function () {
     classe = id;
@@ -124,6 +138,9 @@ function redirectToPagemain() {
   window.location.href = "/main";
 }
 
+function redirectToPageGamemode() {
+  window.location.href = "/gamemode";
+}
 
 
 // function redirectToPagemainlogin() {

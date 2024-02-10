@@ -120,6 +120,34 @@ public class GuiController {
         // fileController.listFilesInFolder("/app/AUTName/AUTSourceCode");
         // int size = fileController.getClassSize();
 
+        return "main";
+
+    }
+
+    // @PostMapping("/sendVariable")
+    // public ResponseEntity<String>
+    // receiveVariableClasse(@RequestParam("myVariable") Integer myClassa,
+    // @RequestParam("myVariable2") Integer myRobota) {
+    // // Fai qualcosa con la variabile ricevuta
+    // System.out.println("Variabile ricevuta: " + myClassa);
+    // System.out.println("Variabile ricevuta: " + myRobota);
+    // myClass = myClassa;
+    // myRobot = myRobota;
+    // // Restituisci una risposta al client (se necessario)
+    // return ResponseEntity.ok("Dati ricevuti con successo");
+    // }
+
+    @GetMapping("/gamemode")
+    public String gamemodePage(Model model, @CookieValue(name = "jwt", required = false) String jwt) {
+        MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
+        formData.add("jwt", jwt);
+
+        Boolean isAuthenticated = restTemplate.postForObject("http://t23-g1-app-1:8080/validateToken", formData,
+                Boolean.class);
+
+        if (isAuthenticated == null || !isAuthenticated)
+            return "redirect:/login";
+
         List<ClassUT> classes = getClasses();
 
         Map<Integer, String> hashMap = new HashMap<>();
@@ -162,21 +190,9 @@ public class GuiController {
         model.addAttribute("hashMap2", robotList);
 
         // model.addAttribute("evRobot", evosuiteLevel); //aggiunto
-        return "main";
-    }
+        return "gamemode";
 
-    // @PostMapping("/sendVariable")
-    // public ResponseEntity<String>
-    // receiveVariableClasse(@RequestParam("myVariable") Integer myClassa,
-    // @RequestParam("myVariable2") Integer myRobota) {
-    // // Fai qualcosa con la variabile ricevuta
-    // System.out.println("Variabile ricevuta: " + myClassa);
-    // System.out.println("Variabile ricevuta: " + myRobota);
-    // myClass = myClassa;
-    // myRobot = myRobota;
-    // // Restituisci una risposta al client (se necessario)
-    // return ResponseEntity.ok("Dati ricevuti con successo");
-    // }
+    }
 
     @GetMapping("/report")
     public String reportPage(Model model, @CookieValue(name = "jwt", required = false) String jwt) {

@@ -1,158 +1,90 @@
-# Gruppo A10-2024
+# Gruppo A7-2024
 Componenti:
-- Vincenzo D'Angelo - M63/1595
-- Giorgio Di Costanzo - M63/1579
-- Aurelio Salvati - M63/1619
+- Simone Rinaldi - M63/1654
+- Lorenza Pezzullo - M63/1671
+- Giuseppe Imparato - M63/
+- Giada Ottaiano - M63/
   
-# GUIDA ALL'INSTALLAZIONE
+# Guida all'installazione
 
-## PASSO 1
-Scaricare e installare Docker Desktop per il proprio sistema operativo: se già installato correttamente sulla macchina passare al Passo 2.
+Per installare correttamente l'applicazione, seguire attentamente i seguenti passaggi:
 
-NOTA: sebbene il Windows Subsystem for Linux wsl2, una funzionalità che consente di eseguire un ambiente Linux all'interno del sistema operativo Windows garantendo la compatibilità tra Docker Desktop e Windows, normalmente venga installato e aggiornato durante l'installazione di Docker Desktop, vi sono casi in cui questo step non venga effettuato correttamente in maniera automatica (all'apertura di Docker è presente un messaggio di errore "WSL Error"), bisogna quindi installare manualmente wsl tramite i seguenti step:
-<pre>
-a) avviare il prompt dei comandi
-b) digitare wsl --install e premere invio
-c) digitare wsl --update e premere invio
-d) riavviare la macchina
-</pre>
-1) Procedere all'installazione di Docker Desktop: https://www.docker.com/products/docker-desktop/
-2) All'avvio di Docker Desktop nella sezione Settings -> General controllare che sia spuntata l'opzione "Use the WSL 2 based engine"
+1. Scaricare Docker Desktop dal seguente [link](https://www.docker.com/products/docker-desktop/).
 
-## PASSO 1B
-Nel caso non sia la prima installazione, per la disinstallazione utilizzare "uninstaller.bat" mentre si ha in esecuzione Docker, in questo modo si elimina qualunque file presente su Docker.
+    Nel caso non sia la prima installazione, è necessario effettuare la disinstallazione, quindi utilizzare `uninstaller.bat` mentre si ha in esecuzione Docker: in questo modo si elimina qualunque file presente su Docker. In caso di errore "136 Docker desktop - unexpected wsl error" sarà necessario eseguire il comando `wsl --shutdown` nel terminale ed eseguire il riavvio. Se l'errore persiste, allora è consigliabile installare o aggiornare WSL all'ultima versione con il comando `wsl --install` (o con `wsl --update`).
 
-## PASSO 2
-Avviare lo script "installer.bat" se si sta usando una distribuzione Windows oppure "installermac.sh" nel caso si utilizzi macOS o una distro di Linux.
-Per MacOS - eseguire nella cartella dove è presente il file ”installermac.sh” il comando "chmod +x installermac.sh" per renderlo eseguibile, e poi "./installermac.sh" per eseguirlo.
-Tali script dovranno essere avviati unicamnete con Docker in esecuzione, altrimenti l'installazione non partirà. Saranno effettuate le seguenti operazioni:
-1) Creazione della rete "global-network" comune a tutti i container.
-2) Creazione del volume "VolumeT9" comune ai Task 1 e 9 e del volume "VolumeT8" comune ai Task 1 e 8.
-3) Creazione dei singoli container in Docker desktop.
-4) Esecuzione dei file di installazione nei container del task T8 e T7
-5) Avvio dei container
-6) Comandi di inizializzazione del database del task T1
-   
-NOTA: il container relativo al Task 9 ("Progetto-SAD-G19-master") si sospenderà autonomamente dopo l'avvio. Esso viene utilizzato solo per "popolare" il volume "VolumeT9" condiviso con il Task 1.
+2. Una volta scaricata la cartella del progetto, avviare lo script `installer.bat` su Windows. Su MacOS è necessario eseguire il comando `chmod +x installermac.sh` nella cartella in cui è presente il file `installermac.sh` e poi eseguire `./installermac.sh` per avviarlo.
 
-L'intera applicazione è adesso pienamente configurata e raggiungibile sulla porta :80. Per una guida all'installazione e all'utilizzo più completa consultare la documentazione al capitolo 7.
-# Passi opzionali per esporre l'applicazione su un indirizzo pubblico
-__NB: Ogni lettera rappresenta una soluzione diversa__
+3. Alla fine dell'installazione si avrà:
+    - la creazione della rete global-network comune a tutti i container;
+    - la creazione dei volumi VolumeT8 e VolumeT9 per i task 1-8 e 1-9, rispettivamente;
+    - la creazione dei singoli container nell'applicazione Docker desktop.
+    - la configurazione del container *manvsclass-mongo db-1*; in particolare, lo script esegue in automatico le seguenti operazioni:
+        - `use manvsclass`
+        - `db.createCollection(ClassUT)`
+        - `db.createCollection(interaction)`
+        - `db.createCollection(Admin)`
+        - `db.createCollection(Operation)`
+        - `db.ClassUT.createIndex( difficulty: 1 )`
+        - `db.Interaction.createIndex( name: text, type: 1 )`
+        - `db.interaction.createIndex( name: text )`
+        - `db.Admin.createIndex(username: 1)`
 
-# A: Installazione NGROK
-Nel caso sia stato già installato basterà avviare il container e collegarsi all'indirizzo fornito in precedenza
+Per ulteriori dettagli sull'utilizzo dell'applicazione, si prega di fare riferimento alla sezione seguente.
 
- __PASSO A.1__:
-Registrazione presso il sito: https://ngrok.com/
+---
 
- __PASSO A.2__:
-Accesso alla Dashboard: https://dashboard.ngrok.com/get-started
+# Guida all'utilizzo
 
- __PASSO A.3__:
-Scelta dell'agente (si consiglia Docker).
+Una volta installata correttamente l'applicazione, seguire le istruzioni seguenti:
 
- __PASSO A.4__:
-Inserire il comando sostituendo il __*token*__ e il __*dominio statico*__ fornito:
+## Avvio dei container
 
-    docker run --net=host -it -e NGROK_AUTHTOKEN=TOKEN ngrok/ngrok:latest http --domain= DOMINIO 80
-    
-A questo punto si avrà l'indirizzo pubblico come risposta nel prompt dei comandi.
+Per utilizzare l'applicazione, è necessario avviare tutti i container ad eccezione di `ui gateway`, che dovrà essere avviato per ultimo. L'applicazione è raggiungibile sulla porta `:80`.
 
-*__NB__*: il comando può essere copiato direttamente dalla dashboard di Ngrok, si consiglia di utilizzare il dominio di tipo statico
+## Esposizione dell'applicazione su un indirizzo pubblico
 
-## Video installazione 
+Per esporre l'applicazione su un indirizzo pubblico, si rimanda alla documentazione dei colleghi del gruppo A10 ragggiungibile al seguente [link](https://github.com/Testing-Game-SAD-2023/A10-2024).
 
+---
 
-https://github.com/Testing-Game-SAD-2023/A10-2024/assets/148564450/0292d839-321f-4172-a044-25648d291753
+# Modifiche al codice
 
+Se è necessario modificare il codice dell'applicazione, seguire attentamente i seguenti passaggi:
 
-# B: Esposizione localhost tramite Pinggy
+1. Recarsi nell'applicazione Docker.
+2. Aprire la sezione relativa ai containers.
+3. Selezionare tutti i containers relativi ai file modificati.
+4. Effettuare la delete di tali containers.
+5. Aprire la sezione images.
+6. Selezionare le immagini relative ai file modificati.
+7. Effettuare l'eliminazione di tali immagini.
+8. Recarsi sull'IDE utilizzato ed aprire il terminale integrato della cartella in cui è presente il file `pom.xml` relativo ai file modificati.
+9. Eseguire il comando `mvn clean package`.
+10. Fare clic sul tasto destro sul file `docker-compose.yml` e selezionare "compose up".
+11. Riavviare i container.
 
-__ATTENZIONE__: 
-Si consiglia di non diffondere il link generato da Pinggy poiché all'interno è presente il proprio indirizzo pubblic. 
-UTILE SOLAMENTE IN CASO DI TEST IN AMBIENTE CONTROLLATO!
+---
 
- __PASSO B.1__:
-Mentre Docker è in esecuzione digitare il seguente comando sul prompt dei comandi:
+# Problematiche di utilizzo
 
-    ssh -p 443 -R0:localhost:80 -L4300:localhost:4300 a.pinggy.io
+Di seguito sono elencate alcune delle problematiche riscontrate durante l'utilizzo dell'applicazione al fine di agevolarne l'utilizzo per i gruppi successivi.
 
- __PASSO B.2__: 
-Per la richiesta della password, dare una stringa vuota.
-Infine compariranno a schermo l'indirizzo pubblico.
+## Cache del browser
+
+Disattivando la cache del browser, è possibile garantire che ogni modifica apportata al codice sorgente o alle risorse dell'applicazione sia immediatamente visualizzata nel browser. La cache del browser può causare problemi di compatibilità e disattivarla semplifica il processo di debug, consentendo agli sviluppatori di identificare e risolvere rapidamente i bug senza dover preoccuparsi di eventuali caching persistenti che potrebbero mascherare il problema.
+
+## Versione Docker
+
+Durante lo sviluppo dell'applicazione, è emersa una problematica legata alla versione di Docker. È stato osservato che nelle versioni più recenti di Docker, dopo una serie di disinstallazioni e reinstallazioni dell'applicazione, potrebbero verificarsi problemi durante il download quando si avvia il file `installer.bat`. Nel caso in cui si riscontrino errori come quello mostrato nella figura seguente, potrebbe essere necessario disinstallare Docker e utilizzare una versione non successiva alla `4.25.1` evitando così errori nella costruzione dei container.
+
+![Errore Installer.bat](Media/Foto/ErrorInstaller.png)
 
 
+## Porte già in uso
 
+Durante l'avvio dell'applicazione, potrebbe verificarsi un problema in cui alcuni container non si avviano correttamente, mostrando un messaggio di errore relativo alla porta già in uso. Un esempio comune potrebbe riguardare il container T4, poiché la porta 3000 è comunemente utilizzata dal processo `MySQL80`. In questo caso, è necessario aprire la schermata dei servizi attivi su Windows per individuare e terminare il processo che sta attualmente utilizzando la porta in questione. In alternativa, è possibile risolvere questo problema modificando la porta del container in questione per evitare conflitti.
 
-# C: Installazione Server Esterno 
+## 502 Bad Gateway
 
-
-
-## PASSO C.1 
-Il primo passo è quello di registrarsi presso il sito: https://www.kamatera.com/
-
-## PASSO C.2
-Creare e configurare il server con sistema linux, impostando le specifiche tecniche, si consigliano: 
-CPU:2 
-RAM: 8GB
-Memoria: 40GB
-
-## PASSO C.3
-Scaricare puTTY e collegarsi tramite protocollo SSH sul IP fornito dal Server.
-
-## PASSO C.4 
-All'interno del terminale di puTTY, eseguire i seguenti comandi per clonare la cartella di github, installare docker e l'applicazione web su docker: 
-
-    sudo apt update
-    sudo apt install git
-    git clone https://github.com/Testing-Game-SAD-2023/A10-2024
-    cd ./A10-2024
-    chmod +x installer_docker.sh
-    chmod +x installer-linux-server.sh
-    chmod +x uninstaller.sh
-    ./installer_docker.sh
-    ./installer-linux-server.sh
-
-## PASSO C.5
-L' installazione a questo punto è completata, da linea di comando è possibile vedere se tutti i container sono in stato di RUN con il seguente comando: 
-
-    docker container ls -a
-    
-E farli ripartire tutti con:
-
-    docker restart $(docker ps -q -a)
-
-## PASSO C.6
-Accedendo al indirizzo IP tramite browser sarà possibile utilizzare l'applicazione web tramite indirizzo pubblico
-
-## Video installazione 
-
-https://github.com/Testing-Game-SAD-2023/A10-2024/assets/148564450/b96c6831-d134-44af-aae7-5cb78e503090
-
-
-
-
-
-
-# VIDEO DIMOSTRAZIONE
-## Admin
-
-
-
-https://github.com/Testing-Game-SAD-2023/A10-2024/assets/148564450/955ead78-04ed-4763-8777-4ebb13bfdd1a
-
-
-
-## Player
-
-
-
-https://github.com/Testing-Game-SAD-2023/A10-2024/assets/148564450/d92328cd-1863-48f4-abe1-a94c04963cf7
-
-
-
-## Mobile Device
-
-
-
-https://github.com/Testing-Game-SAD-2023/A10-2024/assets/24376231/18f1cbd2-3671-4012-9911-584ca4215690
+Occasionalmente, anche dopo che tutti i container sono stati avviati con successo, la pagina web potrebbe visualizzare un messaggio di errore del tipo `502 Bad Gateway`. Una possibile ragione dietro questo tipo di errore potrebbe essere correlata alla rapidità con cui si tenta di accedere all'applicazione web subito dopo il riavvio dei container. In questi casi, la piattaforma potrebbe richiedere del tempo per completare il processo di avvio e stabilire la connessione corretta tra i vari componenti dell'applicazione. Attendere alcuni istanti prima di tentare di accedere all'applicazione può spesso risolvere il problema. Tuttavia, se l'errore persiste nonostante l'attesa, è

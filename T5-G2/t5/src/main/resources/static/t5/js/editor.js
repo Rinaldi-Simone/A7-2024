@@ -225,6 +225,9 @@ storico.addEventListener("click", function () {
         } catch (error) {
           console.error('Error:', error);
         }
+
+        // Printing separator
+        dastampare += "-----------------------------------------------------------------------------\n\n";
       }
 
       consoleArea.setValue(dastampare);

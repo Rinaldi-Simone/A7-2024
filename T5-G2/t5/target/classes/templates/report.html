@@ -40,18 +40,11 @@
   
     <div class="div_buttons">
         <div class="div_back">
-          <button type="button" class="btn custom-button" th:onclick="redirectToPagemain()">Go back</button>
+          <button type="button" class="btn custom-button" th:onclick="redirectToPageGamemode()">Go back</button>
           <button type="button" class="btn custom-button" th:onclick="redirectToPageeditor()">Submit</button>
       </div>
   </div>
   <script>
-
-    var username = parseJwt(getCookie("jwt")).sub;
-
-    username = username.toString();
-
-    localStorage.setItem("username", username);
-    console.log("username :", username);
 
     var nameCUT= localStorage.getItem("classe");
     var robotScelto = localStorage.getItem("robot");
