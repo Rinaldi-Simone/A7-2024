@@ -44,7 +44,7 @@ Per utilizzare l'applicazione, è necessario avviare tutti i container ad eccezi
 
 ## Esposizione dell'applicazione su un indirizzo pubblico
 
-Per esporre l'applicazione su un indirizzo pubblico, si rimanda alla documentazione dei colleghi del gruppo A10 ragggiungibile al seguente [link](https://github.com/Testing-Game-SAD-2023/A10-2024).
+Per esporre l'applicazione su un indirizzo pubblico, si rimanda alla documentazione dei colleghi del gruppo A10 raggiungibile al seguente [link](https://github.com/Testing-Game-SAD-2023/A10-2024).
 
 ---
 
